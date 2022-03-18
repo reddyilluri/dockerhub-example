@@ -1,12 +1,15 @@
 pipeline {
-  agent any
-    environment {
-    DOCKERHUB_CREDENTIALS = credentials('reddyilluri')
+  agent { label 'linux' }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('darinpope-dockerhub')
   }
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t reddyilluri/dp-alpine:latest .'
+        sh 'docker build -t darinpope/dp-alpine:latest .'
       }
     }
     stage('Login') {
@@ -16,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push reddyilluri/dp-alpine:latest'
+        sh 'docker push darinpope/dp-alpine:latest'
       }
     }
   }
